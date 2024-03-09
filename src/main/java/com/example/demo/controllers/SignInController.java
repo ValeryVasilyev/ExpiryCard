@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 @Controller
 public class SignInController {
 
@@ -26,12 +24,18 @@ public class SignInController {
 
     @PostMapping("/")
     public String getLogin(@RequestParam String login, Model model) {
+        if (login == null || login.equals("") || login.contains(" ")) {
+            String errorText = "Введите логин без пробелов";
+            model.addAttribute("errorText", errorText);
+            return "sign-inWithErrors";
+        }
         Customer customer = new Customer(login);
-        try{
+
+        // Если нет введённого логина в БД, то создаём нового кастомера
+        if (customerRepository.findByLogin(login) == null) {
             customerRepository.save(customer);
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("login", login);
-            return "AlreadyCreatedLogin";
+        } else {
+            customer = customerRepository.findByLogin(login);
         }
         return "redirect:/" + customer.getId() + "/cards";
     }

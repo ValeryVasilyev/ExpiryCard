@@ -26,9 +26,13 @@
             }
         }
 
-        .return-button {
-            display:block;
-            margin-left:auto;
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
         }
 
         .b-example-vr {
@@ -108,20 +112,22 @@
     <article class="my-3" id="tables">
         <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
             <form action="/" method="get">
-            <button><img type="submit" src="https://www.svgrepo.com/show/40892/home-button.svg" width="15" height="15"></button>
+                <button><img type="submit" src="https://www.svgrepo.com/show/40892/home-button.svg" width="15" height="15"></button>
             </form>
             <h3>Ваши карты</h3>
             <div class="bd-aside">
-                    <button type="button" class="bd-aside btn d-inline-flex align-items-center border-0 collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Создать новую карту</button>
+                <button type="button" class="bd-aside btn d-inline-flex align-items-center border-0" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Создать новую карту</button>
             </div>
             <form th:href="@{${id} + '/cards'}" method="post">
-                    <ul class="list-unstyled ps-3 collapse" id="contents-collapse">
-                        <label>Номер карты</label>
-                        <li><input name="cardNumber" type="number" id="floatingInput1" placeholder="Номер карты"/></li>
-                        <label style="margin-top:8px">Дата окончания действия</label>
-                        <li><input name="expiredAt" type="datetime-local" th:value="${defaultDate}" id="floatingInput2"/></li>
-                        <button style="margin-top:16px" class="btn btn-primary" type="submit">Создать карту</button>
-                    </ul>
+                <ul class="list-unstyled ps-3 collapse show" id="contents-collapse">
+                    <label>Номер карты</label>
+                    <li><input name="cardNumber" type="number" id="floatingInput1" placeholder="Номер карты"/></li>
+                    <label style="margin-top:8px">Дата окончания действия</label>
+                    <li><input name="expiredAt" type="datetime-local" th:value="${expiredAt}" id="floatingInput2"/></li>
+                    <button style="margin-top:16px" class="btn btn-primary" type="submit">Создать карту</button>
+                    <div th:text="${errorText}"}></div>
+                </ul>
+
             </form>
         </div>
 
