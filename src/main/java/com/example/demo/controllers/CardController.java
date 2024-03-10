@@ -73,7 +73,6 @@ public class CardController {
                 LocalDateTime expiredAtDate = LocalDateTime.parse(card.getExpiredAt());
                 card.setCreatedAt(createdAtDate.format(ruFormatter));
                 card.setExpiredAt(expiredAtDate.format(ruFormatter));
-                System.out.println(card.getIsExpired());
             }
             model.addAttribute("cards", cards);
             return model;
