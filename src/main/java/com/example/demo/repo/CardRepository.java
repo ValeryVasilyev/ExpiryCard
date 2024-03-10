@@ -10,4 +10,8 @@ public interface CardRepository extends CrudRepository<Card, Long> {
     Iterable<Card> findAllByCustomerId(@Param("customerId") Long customerId);
 
     Card findByCardNumber(@Param("cardNumber") Long cardNumber);
+
+    void deleteCardById(@Param("id") Long id);
+
+    Card findCardById(@Param("id") Long id);
 }

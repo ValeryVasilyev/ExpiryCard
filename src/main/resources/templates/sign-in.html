@@ -90,6 +90,7 @@
         <h1 class="h3 mb-3 fw-normal">Введите логин</h1>
         <input name="login" type="text" class="form-control" id="floatingInput" placeholder="Логин"/>
         <button style="margin-top:16px" class="btn btn-primary w-100 py-2" type="submit">Войти или зарегистрироваться</button>
+        <div th:text="${errorText}"/>
     </form>
 </main>
 

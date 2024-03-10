@@ -18,6 +18,7 @@ public class Card {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
 
+    // Конструктор для создания карты
     public Card(Long customerId, Long cardNumber, LocalDateTime expiredAt){
         this.customerId = customerId;
         this.cardNumber = cardNumber;

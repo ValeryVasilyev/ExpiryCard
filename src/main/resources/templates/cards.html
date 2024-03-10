@@ -114,21 +114,20 @@
             <div class="bd-aside">
                     <button type="button" class="bd-aside btn d-inline-flex align-items-center border-0 collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Создать новую карту</button>
             </div>
-            <form th:href="@{${id} + '/cards'}" method="post">
-                    <ul class="list-unstyled ps-3 collapse" id="contents-collapse">
+            <form th:action="'/' + ${customerId} + '/cards/createCard'" method="post">
+                    <ul th:class="'list-unstyled ps-3 collapse ' + ${isCollapsed}" id="contents-collapse" style>
                         <label>Номер карты</label>
                         <li><input name="cardNumber" type="number" id="floatingInput1" placeholder="Номер карты"/></li>
                         <label style="margin-top:8px">Дата окончания действия</label>
                         <li><input name="expiredAt" type="datetime-local" th:value="${defaultDate}" id="floatingInput2"/></li>
                         <button style="margin-top:16px" class="btn btn-primary" type="submit">Создать карту</button>
+                        <div th:text="${errorText}"/>
                     </ul>
             </form>
         </div>
-
         <div>
             <div class="bd-example-snippet bd-code-snippet">
                 <div class="bd-example m-0 border-0">
-
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -145,13 +144,17 @@
                             <td th:text="${card.cardNumber}"></td>
                             <td th:text="${card.createdAt}"></td>
                             <td th:text="${card.expiredAt}"></td>
-                            <td><button>
-                                <img src="https://static.thenounproject.com/png/4147202-200.png" width="15" height="15" >
-                            </button></td>
+                            <td>
+                                <form th:action="'/' + ${customerId} + '/cards/deleteCard'" method="post">
+                                <button type="submit" name="cardId" th:value="${card.id}">
+                                    <img src="https://static.thenounproject.com/png/4147202-200.png" width="15" height="15">
+                                </button>
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-
+                </form>
                 </div>
             </div>
         </div>

@@ -24,10 +24,11 @@ public class SignInController {
 
     @PostMapping("/")
     public String getLogin(@RequestParam String login, Model model) {
+        String errorText = "";
         if (login == null || login.equals("") || login.contains(" ")) {
-            String errorText = "Введите логин без пробелов";
+            errorText = "Введите логин без пробелов";
             model.addAttribute("errorText", errorText);
-            return "sign-inWithErrors";
+            return "sign-in";
         }
         Customer customer = new Customer(login);
 
