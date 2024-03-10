@@ -143,7 +143,7 @@
                             <th scope="row" th:text="${card.id}"></th>
                             <td th:text="${card.cardNumber}"></td>
                             <td th:text="${card.createdAt}"></td>
-                            <td th:text="${card.expiredAt}"></td>
+                            <td th:text="${card.expiredAt}" th:style="${card.isExpired ? 'color: #A60000' : 'color: #3D9200'}"></td>
                             <td>
                                 <form th:action="'/' + ${customerId} + '/cards/deleteCard'" method="post">
                                 <button type="submit" name="cardId" th:value="${card.id}">

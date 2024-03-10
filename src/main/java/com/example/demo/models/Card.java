@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -16,22 +18,16 @@ import java.time.format.DateTimeFormatter;
 @Entity
 public class Card {
 
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+    // Запись дат в БД совершаем по формату фронта
+    static DateTimeFormatter frontFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"); // Формат даты в календаре на фронте
 
     // Конструктор для создания карты
     public Card(Long customerId, Long cardNumber, LocalDateTime expiredAt){
         this.customerId = customerId;
         this.cardNumber = cardNumber;
-        this.createdAt = LocalDateTime.now().format(formatter); // Дату создания форматируем под читаемый формат
-        this.expiredAt = formatFrontDate(expiredAt); // Дату окончания действия форматируем под читаемый формат
+        this.createdAt = LocalDateTime.now().format(frontFormat);
+        this.expiredAt = expiredAt.format(frontFormat);
         this.isExpired = expiredAt.isBefore(LocalDateTime.now());
-    }
-
-    private String formatFrontDate(LocalDateTime expiredAt) {
-        DateTimeFormatter frontFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        String tempDate = expiredAt.format(frontFormat);
-        LocalDateTime formattedDate = LocalDateTime.parse(tempDate);
-        return formattedDate.format(formatter);
     }
 
     @Id

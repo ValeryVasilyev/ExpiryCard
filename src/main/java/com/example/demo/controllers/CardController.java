@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 
 @Controller
 public class CardController {
 
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    static DateTimeFormatter ruFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm").withLocale(new Locale("ru")); // Русский формат
     private String errorText = "";
     private String isCollapsed = "";
     private LocalDateTime setExpiredAt = LocalDateTime.now();
@@ -65,6 +67,14 @@ public class CardController {
         clearParams();
         try { // блок для поимки исключения, когда таблица с картами отсутствует
             Iterable<Card> cards = cardRepository.findAllByCustomerId(customerId);
+            for (Card card : cards) {
+                // Перед отображение на фронте форматируем из формата yyyy-MM-dd'T'HH:mm в русский формат
+                LocalDateTime createdAtDate = LocalDateTime.parse(card.getCreatedAt());
+                LocalDateTime expiredAtDate = LocalDateTime.parse(card.getExpiredAt());
+                card.setCreatedAt(createdAtDate.format(ruFormatter));
+                card.setExpiredAt(expiredAtDate.format(ruFormatter));
+                System.out.println(card.getIsExpired());
+            }
             model.addAttribute("cards", cards);
             return model;
         } catch (Exception e) {
