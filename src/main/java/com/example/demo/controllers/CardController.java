@@ -2,10 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.Card;
 import com.example.demo.repo.CardRepository;
-import jakarta.websocket.server.ServerEndpoint;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +24,7 @@ public class CardController {
 
     @GetMapping("/{id}/cards")
     public String getCards(Model model, @PathVariable(value = "id") Long customerId) {
-        model = getModel(model, customerId);
+        model = getModel(model, customerId); // Наполняем модель аттрибутами для html
         return "cards";
     }
 
@@ -44,6 +41,7 @@ public class CardController {
         if (cardRepository.findByCardNumber(cardNumber) == null) {
             if (expiredAt == null) { // Кейс, если удалить значение из поля даты
                 errorText = "Укажите дату окончания действия карты";
+                isCollapsed = "show";
                 return "redirect:/" + customerId + "/cards";
             }
             cardRepository.save(new Card(customerId, cardNumber, expiredAt));
@@ -52,16 +50,19 @@ public class CardController {
             return "redirect:/" + customerId + "/cards";
         } else { // Кейс ввода уже созданного номера карты в БД
             errorText = "Такой номер уже занят";
+            isCollapsed = "show";
             return "redirect:/" + customerId + "/cards";
         }
     }
 
+    /* Метод формирует данные для отображения на html-странице */
     public Model getModel(Model model, Long customerId) {
         model.addAttribute("defaultDate", LocalDateTime.now().format(formatter));
         model.addAttribute("customerId", customerId);
         model.addAttribute("errorText", errorText);
         model.addAttribute("isCollapsed", isCollapsed);
         model.addAttribute("expiredAt", setExpiredAt);
+        clearParams();
         try { // блок для поимки исключения, когда таблица с картами отсутствует
             Iterable<Card> cards = cardRepository.findAllByCustomerId(customerId);
             model.addAttribute("cards", cards);
@@ -71,6 +72,12 @@ public class CardController {
             System.out.println(e.getMessage());
             return model;
         }
+    }
+
+    /* Метод "сбрасывает" значения аттрибутов к значениям по умолачанию */
+    private void clearParams() {
+        errorText = "";
+        isCollapsed = "";
     }
 
     @PostMapping("/{id}/cards/deleteCard")

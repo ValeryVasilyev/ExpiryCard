@@ -4,7 +4,6 @@ import com.example.demo.models.Customer;
 
 import com.example.demo.repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
