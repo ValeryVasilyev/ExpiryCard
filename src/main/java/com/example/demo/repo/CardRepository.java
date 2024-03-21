@@ -1,17 +1,22 @@
 package com.example.demo.repo;
 
 import com.example.demo.models.Card;
-import com.example.demo.models.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface CardRepository extends CrudRepository<Card, Long> {
 
     Iterable<Card> findAllByCustomerId(@Param("customerId") Long customerId);
 
-    Card findByCardNumber(@Param("cardNumber") Long cardNumber);
+    Card save(Card card);
 
-    void deleteCardById(@Param("id") Long id);
+    List<Card> saveAll(List<Card> cardList);
 
-    Card findCardById(@Param("id") Long id);
+    void deleteById(@Param("id") Long id);
+
+    Card findCardById(Long id);
 }
