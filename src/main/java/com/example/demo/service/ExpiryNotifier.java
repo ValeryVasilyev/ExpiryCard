@@ -3,22 +3,28 @@ package com.example.demo.service;
 import com.example.demo.models.Card;
 import com.example.demo.repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 
+@Service
 public class ExpiryNotifier {
 
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void createNotification(Card card) {
-        Long customerId = card.getCustomerId();
-        String login = customerRepository.findById(customerId).get().getLogin();
-        String message = "Уважаемый " + login + ", Ваша карта №" + card.getCardNumber() + "просрочена";
-        notify(message);
+    public void notify(Card card, Long customerId) {
+        String message = createMessage(card, customerId);
+        makeNotification(message);
     }
 
-    public void notify(String message) {
+    public String createMessage(Card card, Long customerId) {
+        String login = customerRepository.findById(customerId).get().getLogin();
+        String message = "Уважаемый " + login + ", Ваша карта №" + card.getCardNumber() + " просрочена";
+        return message;
+    }
+
+    public void makeNotification(String message) {
         try(FileWriter fw = new FileWriter("notifications.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
@@ -28,4 +34,6 @@ public class ExpiryNotifier {
             e.printStackTrace();
         }
     }
+
+
 }
