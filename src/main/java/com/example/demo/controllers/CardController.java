@@ -38,8 +38,10 @@ public class CardController {
         model.addAttribute("expiredAt", setExpiredAt);
         clearParams();
         Iterable<Card> cards = cardService.findAllByCustomerId(customerId);
-        if (cards.iterator().next().getCreatedAt().contains("T")) {
-            cards = formatCardDate(cards);
+        for (Card card : cards) { // TODO изменить логику форматирования даты
+            if (card.getCreatedAt().contains("T")) {
+                cards = formatCardDate(cards);
+            }
         }
         model.addAttribute("cards", cards);
         return "cards";
@@ -63,7 +65,7 @@ public class CardController {
     }
 
     @PostMapping("/{id}/cards/createCard")
-    public String createCard(@RequestParam(defaultValue = "0") Long cardNumber, @RequestParam(defaultValue = "") LocalDateTime expiredAt, @PathVariable(value = "id") Long customerId, Model model) {
+    public String createCard(@RequestParam(defaultValue = "0") Long cardNumber, @RequestParam(defaultValue = "") LocalDateTime expiredAt, @PathVariable(value = "id") Long customerId) {
         errorText = "";
         if (cardNumber <= 0) { // Обработка кейса, когда не передали номер карты
             errorText = "Номер карты должен быть больше 0";
@@ -91,7 +93,7 @@ public class CardController {
     }
 
     @PostMapping("/{id}/cards/deleteCard")
-    public String deleteCard(@RequestParam Long cardId, @PathVariable(value = "id") Long customerId, Model model) {
+    public String deleteCard(@RequestParam Long cardId, @PathVariable(value = "id") Long customerId) {
         cardService.deleteById(cardId, customerId);
         return "redirect:/" + customerId + "/cards";
     }
