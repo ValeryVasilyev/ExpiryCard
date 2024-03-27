@@ -22,10 +22,10 @@ public class BaseTest {
     @BeforeAll
     public static void setUp() {
         playwright = Playwright.create();
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
-        Path path = Paths.get("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
-        launchOptions.setExecutablePath(path).setHeadless(false).setChannel("chrome");
-        browser = playwright.chromium().launch(launchOptions);
+        //BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions();
+        //Path path = Paths.get("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
+        //launchOptions.setExecutablePath(path).setHeadless(false).setChannel("chrome");
+        browser = playwright.chromium().launch();
 
     }
 

@@ -15,7 +15,7 @@ import static com.microsoft.playwright.options.WaitForSelectorState.VISIBLE;
 
 public class PageObject {
     private final Page page;
-    private final String url = "http://localhost:8081/";
+    private final String url = "http://37.230.192.102:8081/";
 
     public PageObject(Page page) {
         this.page = page;
