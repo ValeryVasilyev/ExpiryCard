@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Tests extends BaseTest {
 
-    private final String url = "http://37.230.192.102:8081/";
+    private final String url = "http://localhost:8081/";
 
     @Test
     public void identificationTest() {
